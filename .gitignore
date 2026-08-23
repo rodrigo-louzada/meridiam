@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+node_modules/
+.wrangler/
+*.log
+
+# Large media — see README; must stay under Cloudflare Pages 25 MiB/file
+assets/video.mp4
