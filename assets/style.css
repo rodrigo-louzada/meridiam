@@ -145,12 +145,29 @@ p{margin:0 0 1rem}
 .btn:hover{background:#fff;border-color:#fff;color:var(--navy)}
 
 /* Film opener ------------------------------------------------ */
-/* Poster as background so it paints immediately; the video fades in over it. */
+/* Poster as background so it paints immediately, and it stays the backdrop
+   for reduced-motion, no-JS and blocked-autoplay viewers. */
 .film{position:relative;overflow:hidden;background:#04101F url(./poster.jpg) center/cover no-repeat;
   width:100%;aspect-ratio:16/9}
-.film-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transition:opacity .9s ease}
-.film-video.playing{opacity:1}
+/* Deliberately never faded in from opacity:0. WebKit only autoplays a video
+   it considers visible, and pauses one that stops being visible, so waiting
+   for 'playing' before revealing it prevents the very playback it waits on -
+   this is why the film was a still frame on some iPhones. No fade is needed
+   anyway: the poster attribute is the same frame as the CSS background, so
+   the handover to live footage is already seamless. */
+.film-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* Shown only when autoplay was refused - iOS Low Power Mode blocks it even
+   for muted inline video. A tap is a user gesture, which is always allowed. */
+.film-play{position:absolute;left:50%;top:66%;z-index:3;transform:translate(-50%,-50%);
+  display:none;place-items:center;width:74px;height:74px;padding:0;cursor:pointer;
+  background:rgba(4,16,31,.45);border:1px solid rgba(255,255,255,.55);border-radius:50%;
+  color:#fff;transition:background .2s,border-color .2s,transform .2s}
+.film.needs-tap .film-play{display:grid}
+.film-play:hover{background:rgba(4,16,31,.7);border-color:#fff;transform:translate(-50%,-50%) scale(1.06)}
+.film-play svg{width:26px;height:26px;margin-left:4px;fill:currentColor}
+/* The cue points down the page; with no film running it is misleading. */
+.film.needs-tap .film-cue{display:none}
 /* Top scrim keeps the white masthead legible over bright sky; bottom fade
    carries the film into the navy hero beneath it. */
 .film::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
@@ -369,6 +386,39 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .ccard h3{margin-bottom:.6rem;color:#fff}
 .ccard p{color:var(--ink-inv);font-size:.92rem;margin:0 0 1.1rem}
 .ccard .addr{font-family:var(--f-mono);font-size:.77rem;color:#fff;word-break:break-all}
+
+/* Office locator --------------------------------------------- */
+/* Sits flush under the contact cards, sharing their 1px rule grid. */
+.office{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:1px;
+  background:var(--rule-dark);border:1px solid var(--rule-dark);border-top:0}
+@media (max-width:820px){.office{grid-template-columns:1fr}}
+.office-map{position:relative;background:#04101F;overflow:hidden;min-height:340px}
+/* Absolute fill plus preserveAspectRatio="slice" lets the panel match the
+   detail column's height at any width. Half the row at desktop is close to
+   the artwork's own 1.65:1, and the pin sits near its centre, so 'slice'
+   trims only open sea. */
+.map{position:absolute;inset:0;width:100%;height:100%;display:block}
+.map-sea{fill:#04101F}
+.map-grat path{fill:none;stroke:#1B4680;stroke-width:1;vector-effect:non-scaling-stroke}
+.map-land{fill:#0D2C56;stroke:var(--steel);stroke-width:1.4;stroke-linejoin:round;
+  vector-effect:non-scaling-stroke}
+.map-land-far{fill:#0A2145;stroke:#1B4680;stroke-width:1.2}
+.map-halo{fill:var(--steel);opacity:.14}
+.map-ring{fill:none;stroke:var(--steel);stroke-width:1.6;vector-effect:non-scaling-stroke}
+.map-dot{fill:#fff}
+.map-cross{stroke:var(--steel);stroke-width:1.4;vector-effect:non-scaling-stroke}
+.map-label{fill:#fff;font-family:var(--f-mono);font-size:15px;letter-spacing:.22em}
+@media (prefers-reduced-motion:no-preference){
+  .map-halo{animation:ping 3.4s ease-out infinite}
+}
+@keyframes ping{0%{transform:scale(.7);opacity:.3}70%,100%{transform:scale(1.5);opacity:0}}
+.office-detail{background:var(--navy-800);padding:1.9rem 1.6rem;display:flex;flex-direction:column;
+  align-items:flex-start}
+.office-detail h3{margin-bottom:.9rem;color:#fff}
+.office-detail address{font-style:normal;font-size:.95rem;color:#fff;line-height:1.6}
+.office-detail .coord{font-family:var(--f-mono);font-size:.75rem;color:var(--steel);margin:.5rem 0 0}
+.office-detail .office-note{font-size:.86rem;color:var(--ink-inv-2);margin:1.1rem 0 1.6rem}
+.office-detail .btn{margin-top:auto;font-size:.68rem;padding:.8rem 1.5rem}
 footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(--rule-dark);padding-block:3rem 1.5rem}
 .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--rule-dark)}
 @media (max-width:900px){.fgrid{grid-template-columns:1fr 1fr}}
@@ -389,4 +439,19 @@ footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(
    in the contact section and the footer. Placed last to beat the base rule. */
 @media (max-width:760px){
   .util{display:none}
+  /* The film's burned-in wordmark runs from 24% to 49% of the film's height.
+     At 16:9 that top edge is 13.7vw down, while the Menu button is a fixed
+     height — so the narrower the phone, the tighter it gets. Trimming the
+     masthead's top padding lifts the button clear. .topbar.compact .masthead
+     is more specific, so the pinned bar keeps its own spacing. */
+  .masthead{padding-block:.5rem 1.1rem}
+  /* Likewise the play button, which would otherwise land on the wordmark. */
+  .film-play{width:58px;height:58px;top:69%}
+  .film-play svg{width:21px;height:21px}
+}
+/* Below ~400px the wordmark is only 44px down, so the button needs to be
+   shorter as well as higher. */
+@media (max-width:400px){
+  .masthead{padding-block:.4rem .9rem}
+  .navtoggle{padding:.55rem .8rem}
 }

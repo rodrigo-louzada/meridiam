@@ -12,11 +12,14 @@
     }) + ' · 08:00 CET';
   }
 
-  // Film opener. The poster is a CSS background, so any early return here
-  // simply leaves the still frame in place — nothing to clean up.
+  // Film opener. The poster is both a CSS background and the video's own
+  // poster attribute, so any early return here simply leaves the still frame
+  // in place — nothing to clean up.
   (function () {
     var v = document.querySelector('.film-video');
     if (!v) return;
+    var film = v.parentNode;
+    var btn = film.querySelector('.film-play');
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -24,17 +27,58 @@
     var c = navigator.connection;
     if (c && (c.saveData || /^(slow-)?2g$/.test(c.effectiveType || ''))) return;
 
+    // Safari needs these as properties, not only as attributes, when the
+    // source is assigned from script — otherwise it can judge the element
+    // unmuted and refuse to start it inline.
+    v.muted = true;
+    v.playsInline = true;
+
     // 720p for phones, 1080p above. Chosen once — swapping later would
     // re-download the footage.
     var narrow = window.matchMedia('(max-width: 760px)').matches;
     v.src = v.getAttribute(narrow ? 'data-src-narrow' : 'data-src-wide');
+    v.load();                        // preload="none" needs the explicit kick
 
-    v.addEventListener('playing', function () { v.classList.add('playing'); }, { once: true });
-    v.addEventListener('error', function () { v.removeAttribute('src'); });
+    var armed = false;
 
-    var p = v.play();
-    // Autoplay can still be refused (iOS Low Power Mode, strict settings).
-    if (p && p.catch) p.catch(function () { v.removeAttribute('src'); });
+    var attempt = function () {
+      var p = v.play();
+      if (!p || !p.catch) return;
+      p.catch(function (err) {
+        // NotAllowedError is a policy refusal rather than a broken file —
+        // iOS Low Power Mode blocks autoplay even for muted inline video.
+        // Keep the source and wait for a gesture instead of discarding it.
+        if (!err || err.name === 'NotAllowedError') arm();
+      });
+    };
+
+    var retry = function () { armed = false; attempt(); };
+
+    var arm = function () {
+      if (armed) return;
+      armed = true;
+      film.classList.add('needs-tap');
+      // A gesture anywhere counts, so most viewers never have to find the
+      // button. Passive: this never calls preventDefault.
+      document.addEventListener('touchend', retry, { once: true, passive: true });
+      document.addEventListener('click', retry, { once: true });
+    };
+
+    v.addEventListener('playing', function () {
+      film.classList.remove('needs-tap');
+      armed = false;
+    });
+    // A real decode or network failure: fall back to the poster for good.
+    v.addEventListener('error', function () {
+      v.removeAttribute('src');
+      film.classList.remove('needs-tap');
+    });
+
+    if (btn) {
+      btn.addEventListener('click', function (e) { e.stopPropagation(); retry(); });
+    }
+
+    attempt();
   })();
 
   // Header. Fixed, so it travels with the scroll. Two states:
