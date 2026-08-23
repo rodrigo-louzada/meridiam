@@ -5,4 +5,4 @@ node_modules/
 *.log
 
 # Large media — see README; must stay under Cloudflare Pages 25 MiB/file
-assets/video.mp4
+_source/

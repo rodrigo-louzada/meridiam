@@ -41,8 +41,17 @@
 
 <main id="top">
 
+<!-- ══ FILM ══ Full-bleed opener. Poster is a CSS background so it shows
+     instantly, and remains the backdrop for reduced-motion and no-JS viewers. -->
+<section class="film" aria-label="Meridiam Maritime at sea">
+  <video class="film-video" poster="assets/poster.jpg" muted loop playsinline preload="none"
+         data-src-wide="assets/hero-1080.mp4"
+         data-src-narrow="assets/hero-720.mp4"></video>
+  <a class="film-cue" href="#position" aria-label="Scroll to introduction"><span></span></a>
+</section>
+
 <!-- ══ HERO ══ -->
-<section class="hero">
+<section class="hero" id="position">
   <div class="hero-media" aria-hidden="true">
 
     <!-- Animated fallback: shown until the video plays, and kept on mobile and reduced-motion -->
