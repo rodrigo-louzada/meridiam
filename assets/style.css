@@ -429,7 +429,27 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(--rule-dark);padding-block:3rem 1.5rem}
 .fgrid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2.5rem;padding-bottom:2.5rem;border-bottom:1px solid var(--rule-dark)}
 @media (max-width:900px){.fgrid{grid-template-columns:1fr 1fr}}
-@media (max-width:620px){.fgrid{grid-template-columns:1fr;gap:2rem}}
+/* Phones: four stacked blocks ran to most of a screen, and the two link
+   lists each wasted half the width. Brand and office keep the full row; the
+   short lists pair up. column-gap:0 lets the two hairlines meet, so each row
+   is separated by one continuous rule rather than two broken ones — the
+   left column takes padding-right instead of a gap. */
+@media (max-width:620px){
+  .fgrid{grid-template-columns:1fr 1fr;column-gap:0;row-gap:1.6rem;padding-bottom:1.8rem}
+  .fgrid>*{border-top:1px solid var(--rule-dark);padding-top:1.4rem}
+  .fgrid>:first-child{grid-column:1/-1;border-top:0;padding-top:0}
+  .fgrid>:nth-child(2){padding-right:1.2rem}
+  /* Office was a stack down the left with the right half empty. Phone and
+     address pair off; the 24/7 line runs under both. */
+  .fgrid>:last-child{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;
+    column-gap:0;align-content:start}
+  .fgrid>:last-child h5,
+  .fgrid>:last-child p:last-child{grid-column:1/-1}
+  /* Same trick as the row above, so this column lines up with Enquiries. */
+  .fgrid>:last-child p:first-of-type{padding-right:1.2rem}
+  .fgrid>:last-child p{margin-bottom:0}
+  footer{padding-block:2.4rem 1.2rem}
+}
 .flogo{height:26px;width:auto;margin-bottom:1.2rem}
 .fgrid h5{font-size:.64rem;font-weight:500;letter-spacing:.21em;text-transform:uppercase;color:var(--ink-inv-2);margin:0 0 1rem}
 .fgrid p,.fgrid li{font-size:.86rem;margin:0 0 .4rem}
