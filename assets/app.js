@@ -57,6 +57,22 @@
       if (bar.classList.contains('over-film')) setH();
     });
 
+    // Anchor targets clear the pinned bar by its real collapsed height.
+    // The utility strip collapses over a transition, so measuring the moment
+    // .compact lands reads the bar mid-collapse and leaves anchors low by the
+    // strip's height. Measure again when the transition actually ends.
+    var syncCompactH = function () {
+      if (!bar.classList.contains('compact')) return;
+      document.documentElement.style.setProperty(
+        '--topbar-compact-h', bar.getBoundingClientRect().height + 'px');
+    };
+    // transitionend fires per property, so a shorter one (opacity) can land
+    // while the strip is still collapsing; the timeout catches the settled
+    // height regardless of which property finishes last.
+    bar.addEventListener('transitionend', syncCompactH);
+    addEventListener('resize', syncCompactH);
+    var settle = function () { setTimeout(syncCompactH, 450); };
+
     if (!film || !('IntersectionObserver' in window)) {
       bar.classList.remove('over-film');
       return;
@@ -70,11 +86,7 @@
       var over = entries[entries.length - 1].isIntersecting;
       bar.classList.toggle('over-film', over);
       bar.classList.toggle('compact', !over);
-      // Anchor targets clear the pinned bar by its real collapsed height.
-      if (!over) {
-        document.documentElement.style.setProperty(
-          '--topbar-compact-h', bar.getBoundingClientRect().height + 'px');
-      }
+      if (!over) { syncCompactH(); settle(); }
     }, { threshold: 0 });
     filmWatcher.observe(film);
   })();
