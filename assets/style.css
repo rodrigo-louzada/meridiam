@@ -392,7 +392,19 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .office{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:1px;
   background:var(--rule-dark);border:1px solid var(--rule-dark);border-top:0}
 @media (max-width:820px){.office{grid-template-columns:1fr}}
-.office-map{position:relative;background:#04101F;overflow:hidden;min-height:340px}
+/* The whole panel is the link, so the map itself is the click target. */
+.office-map{position:relative;display:block;background:#04101F;overflow:hidden;min-height:340px;
+  text-decoration:none;-webkit-tap-highlight-color:transparent}
+.office-map:focus-visible{outline:2px solid var(--steel);outline-offset:-3px}
+/* Always on show rather than hover-only: on a phone there is no hover, and
+   an unmarked clickable map is not discoverable. */
+.map-hint{position:absolute;left:1rem;bottom:1rem;z-index:2;
+  font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;color:#fff;
+  background:rgba(4,16,31,.66);border:1px solid rgba(255,255,255,.28);
+  padding:.42rem .7rem;transition:background .2s,border-color .2s}
+.office-map:hover .map-hint{background:rgba(4,16,31,.9);border-color:#fff}
+.office-map:hover .map-land{fill:#123B72}
+.map-land{transition:fill .2s}
 /* Absolute fill plus preserveAspectRatio="slice" lets the panel match the
    detail column's height at any width. Half the row at desktop is close to
    the artwork's own 1.65:1, and the pin sits near its centre, so 'slice'
