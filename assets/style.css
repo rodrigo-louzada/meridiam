@@ -125,7 +125,9 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--steel);outline-offset:3px}
 .wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gutter)}
 .sect{padding-block:var(--pad)}
-section[id]{scroll-margin-top:5.5rem}
+/* Matches the pinned bar's collapsed height; JS refines it from the real
+   measurement once the bar is actually compact. */
+section[id]{scroll-margin-top:var(--topbar-compact-h,4rem)}
 
 h1,h2,h3,h4{font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.12}
 h1{font-size:clamp(2.6rem,6vw,4.8rem);letter-spacing:-.032em;line-height:1}

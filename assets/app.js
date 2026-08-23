@@ -62,18 +62,20 @@
       return;
     }
 
-    // Shrink the observation area by the masthead's height so the swap lands
-    // exactly as the film clears the bar, not a screen-height early.
-    var mast = bar.querySelector('.masthead');
-    var top = mast ? Math.round(mast.getBoundingClientRect().bottom) : 90;
-
     // Held in a variable on purpose: an IntersectionObserver with no live
     // reference can be collected, which silently stops the callbacks.
+    // No rootMargin: the swap happens once the film is fully past, not
+    // partway through it.
     filmWatcher = new IntersectionObserver(function (entries) {
       var over = entries[entries.length - 1].isIntersecting;
       bar.classList.toggle('over-film', over);
       bar.classList.toggle('compact', !over);
-    }, { rootMargin: -top + 'px 0px 0px 0px', threshold: 0 });
+      // Anchor targets clear the pinned bar by its real collapsed height.
+      if (!over) {
+        document.documentElement.style.setProperty(
+          '--topbar-compact-h', bar.getBoundingClientRect().height + 'px');
+      }
+    }, { threshold: 0 });
     filmWatcher.observe(film);
   })();
 
