@@ -147,7 +147,7 @@ p{margin:0 0 1rem}
 /* Film opener ------------------------------------------------ */
 /* Poster as background so it paints immediately; the video fades in over it. */
 .film{position:relative;overflow:hidden;background:#04101F url(./poster.jpg) center/cover no-repeat;
-  height:92vh;height:92svh}
+  height:100vh;height:100svh}
 .film-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity .9s ease}
 .film-video.playing{opacity:1}
@@ -166,6 +166,9 @@ p{margin:0 0 1rem}
 /* The wordmark is burned into the footage and spans most of the frame width,
    so a phone-shaped crop would clip it. Letterbox on narrow screens instead. */
 @media (prefers-reduced-motion:reduce){.film-cue span{animation:none;opacity:.85}}
+
+/* Used for one synchronous measurement at load; never painted. */
+.no-transition *{transition:none!important}
 
 /* Utility + header ------------------------------------------- */
 /* Fixed so it travels with the scroll. Base state is the solid, logo-visible

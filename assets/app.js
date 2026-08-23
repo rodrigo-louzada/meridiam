@@ -57,38 +57,56 @@
       if (bar.classList.contains('over-film')) setH();
     });
 
-    // Anchor targets clear the pinned bar by its real collapsed height.
-    // The utility strip collapses over a transition, so measuring the moment
-    // .compact lands reads the bar mid-collapse and leaves anchors low by the
-    // strip's height. Measure again when the transition actually ends.
-    var syncCompactH = function () {
-      if (!bar.classList.contains('compact')) return;
-      document.documentElement.style.setProperty(
-        '--topbar-compact-h', bar.getBoundingClientRect().height + 'px');
+    // The collapsed height is needed up front: it sets both the anchor
+    // offset and the point at which the bar takes over from the film.
+    // Measured by applying .compact synchronously with transitions off, so
+    // nothing is painted and nothing animates.
+    var root = document.documentElement;
+    var measureCompactH = function () {
+      var wasOver = bar.classList.contains('over-film');
+      var wasCompact = bar.classList.contains('compact');
+      root.classList.add('no-transition');
+      bar.classList.remove('over-film');
+      bar.classList.add('compact');
+      var h = bar.getBoundingClientRect().height;
+      bar.classList.toggle('compact', wasCompact);
+      bar.classList.toggle('over-film', wasOver);
+      void bar.offsetHeight;                       // commit before re-enabling
+      root.classList.remove('no-transition');
+      return h;
     };
-    // transitionend fires per property, so a shorter one (opacity) can land
-    // while the strip is still collapsing; the timeout catches the settled
-    // height regardless of which property finishes last.
-    bar.addEventListener('transitionend', syncCompactH);
-    addEventListener('resize', syncCompactH);
-    var settle = function () { setTimeout(syncCompactH, 450); };
+    var compactH = measureCompactH();
+    var syncCompactH = function () {
+      root.style.setProperty('--topbar-compact-h', compactH + 'px');
+    };
+    syncCompactH();
+    var remeasure = function () {
+      compactH = measureCompactH();
+      syncCompactH();
+      build();                                     // trigger point moves with it
+    };
 
     if (!film || !('IntersectionObserver' in window)) {
       bar.classList.remove('over-film');
       return;
     }
 
-    // Held in a variable on purpose: an IntersectionObserver with no live
+    // Hand over exactly when the collapsed bar would cover whatever film is
+    // still showing: shrinking the root by that height makes the film stop
+    // intersecting at the moment its last visible strip fits behind the bar.
+    // Held in a variable on purpose - an IntersectionObserver with no live
     // reference can be collected, which silently stops the callbacks.
-    // No rootMargin: the swap happens once the film is fully past, not
-    // partway through it.
-    filmWatcher = new IntersectionObserver(function (entries) {
-      var over = entries[entries.length - 1].isIntersecting;
-      bar.classList.toggle('over-film', over);
-      bar.classList.toggle('compact', !over);
-      if (!over) { syncCompactH(); settle(); }
-    }, { threshold: 0 });
-    filmWatcher.observe(film);
+    var build = function () {
+      if (filmWatcher) filmWatcher.disconnect();
+      filmWatcher = new IntersectionObserver(function (entries) {
+        var over = entries[entries.length - 1].isIntersecting;
+        bar.classList.toggle('over-film', over);
+        bar.classList.toggle('compact', !over);
+      }, { rootMargin: -Math.round(compactH) + 'px 0px 0px 0px', threshold: 0 });
+      filmWatcher.observe(film);
+    };
+    build();
+    addEventListener('resize', remeasure);
   })();
 
   // Mobile nav disclosure.
