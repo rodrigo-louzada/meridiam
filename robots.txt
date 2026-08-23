@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://meridiam-maritime.com/sitemap.xml
+Sitemap: https://rodrigo-louzada.github.io/meridiam/sitemap.xml

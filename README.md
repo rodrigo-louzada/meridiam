@@ -21,13 +21,35 @@ Open the file directly with `file://` and the fonts will fail CORS — use a ser
 
 ## Deploying
 
-Cloudflare Pages, connected to this repository:
+GitHub Pages, from the `main` branch:
 
-- Build command:      *(leave empty)*
-- Build output dir:   `/`
+- Repo: <https://github.com/rodrigo-louzada/meridiam>
+- Settings -> Pages -> Source: **Deploy from a branch**, branch `main`, folder `/ (root)`
+- Live at <https://rodrigo-louzada.github.io/meridiam/>
 
-Pushing to the default branch deploys production; any other branch gets a
-preview URL.
+No build step. Pushing to `main` publishes.
+
+`.nojekyll` is required: without it Pages runs the site through Jekyll, which
+skips paths beginning with an underscore and reprocesses the rest.
+
+Every internal path is relative, so the site works from the `/meridiam/`
+subpath. The only absolute URLs are `og:image`, `og:url`, `sitemap.xml` and the
+`Sitemap:` line in `robots.txt`. **Adding a custom domain later means updating
+those four and committing a `CNAME` file.**
+
+### What GitHub Pages cannot do
+
+Pages serves fixed headers and offers no way to change them, so `_headers` is
+inert there. It is kept for a return to Cloudflare. Consequences:
+
+- The CSP moved into a `<meta http-equiv>` tag in `index.html`. It needs
+  `style-src 'unsafe-inline'` because the markup carries 11 inline `style`
+  attributes plus the `noscript` block.
+- `frame-ancestors` is ignored in a meta tag and `X-Frame-Options` cannot be
+  sent, so there is no clickjacking protection. HSTS and `Permissions-Policy`
+  are likewise unavailable.
+- The one-year `immutable` caching on `assets/*` no longer applies; Pages sets
+  its own, roughly ten minutes for HTML.
 
 ## Brand assets
 
