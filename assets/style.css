@@ -170,12 +170,12 @@ p{margin:0 0 1rem}
 /* Utility + header ------------------------------------------- */
 /* Fixed so it travels with the scroll. Base state is the solid, logo-visible
    one, so a no-JS viewer gets a working header; JS adds .over-film on top. */
+/* Fully opaque: at 94% the page ghosted through the bar, and the blur
+   smeared it. Against the navy partnership section that also erased the
+   boundary, so the section read as cut off rather than scrolling under. */
 .topbar{position:fixed;top:0;left:0;right:0;z-index:40;
-  background:rgba(6,26,51,.94);border-bottom:1px solid var(--rule-dark);
+  background:var(--navy-900);border-bottom:1px solid var(--rule-dark);
   transition:background .35s ease,border-color .35s ease}
-@supports (backdrop-filter:blur(8px)){
-  .topbar:not(.over-film){backdrop-filter:blur(8px)}
-}
 .topbar.over-film{background:transparent;border-bottom-color:transparent}
 /* Utility strip collapses once the header is pinned, keeping it compact.
    grid-template-rows 1fr->0fr animates to the strip's real height, which
