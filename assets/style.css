@@ -125,6 +125,7 @@ a{color:inherit}
 :focus-visible{outline:2px solid var(--steel);outline-offset:3px}
 .wrap{max-width:var(--max);margin:0 auto;padding-inline:var(--gutter)}
 .sect{padding-block:var(--pad)}
+section[id]{scroll-margin-top:5.5rem}
 
 h1,h2,h3,h4{font-weight:600;letter-spacing:-.012em;margin:0;line-height:1.12}
 h1{font-size:clamp(2.6rem,6vw,4.8rem);letter-spacing:-.032em;line-height:1}
@@ -165,16 +166,39 @@ p{margin:0 0 1rem}
 @media (prefers-reduced-motion:reduce){.film-cue span{animation:none;opacity:.85}}
 
 /* Utility + header ------------------------------------------- */
-.topbar{position:absolute;top:0;left:0;right:0;z-index:40}
-.util{background:var(--navy-900);border-bottom:1px solid var(--rule-dark)}
+/* Fixed so it travels with the scroll. Base state is the solid, logo-visible
+   one, so a no-JS viewer gets a working header; JS adds .over-film on top. */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:40;
+  background:rgba(6,26,51,.94);border-bottom:1px solid var(--rule-dark);
+  transition:background .35s ease,border-color .35s ease}
+@supports (backdrop-filter:blur(8px)){
+  .topbar:not(.over-film){backdrop-filter:blur(8px)}
+}
+.topbar.over-film{background:transparent;border-bottom-color:transparent}
+/* Utility strip collapses once the header is pinned, keeping it compact.
+   grid-template-rows 1fr->0fr animates to the strip's real height, which
+   max-height cannot do without hard-coding a guess. */
+.util{background:transparent;border-bottom:1px solid var(--rule-dark);
+  display:grid;grid-template-rows:1fr;
+  transition:grid-template-rows .35s ease,opacity .25s ease,border-color .35s ease}
+.util>*{min-height:0;overflow:hidden}
+.topbar.compact .util{grid-template-rows:0fr;opacity:0;border-bottom-color:transparent}
+/* box-sizing:border-box makes padding a height floor, so it has to go too. */
+.topbar.compact .util-in{padding-block:0}
+.topbar.compact .masthead{padding-block:1rem}
+.topbar.over-film .util{border-bottom-color:rgba(255,255,255,.15)}
 .util-in{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:flex-end;padding-block:.55rem;
+  transition:padding-block .35s ease;
   font-family:var(--f-mono);font-size:.7rem;color:var(--ink-inv-2)}
 .util-in a{text-decoration:none}
 .util-in a:hover{color:#fff}
 .util-in .live{color:var(--steel)}
 header{position:relative}
 .masthead{display:flex;align-items:center;justify-content:space-between;gap:2rem;padding-block:1.5rem}
-.logo{height:34px;width:auto}
+.logo{height:34px;width:auto;transition:opacity .4s ease,transform .4s ease}
+.topbar.over-film .logo{opacity:0;transform:translateY(-5px)}
+.topbar.over-film .masthead>a{pointer-events:none}
+.topbar.compact .logo{height:28px}
 nav{display:flex;gap:1.7rem;font-size:.69rem;font-weight:500;letter-spacing:.19em;text-transform:uppercase}
 nav a{color:var(--ink-inv);text-decoration:none;padding-block:.3rem;border-bottom:1px solid transparent;transition:color .2s}
 nav a:hover{color:#fff;border-bottom-color:var(--steel)}
@@ -360,8 +384,8 @@ footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(
    The masthead joins the normal flow rather than floating over the film,
    so the letterboxed frame sits directly beneath it with no dead space. */
 @media (max-width:760px){
-  .topbar{position:relative;background:var(--navy-900)}
-  .film{height:auto;background:#04101F;padding-bottom:.5rem}
+  .film{height:auto;background:#04101F;padding-bottom:.5rem;
+    padding-top:var(--topbar-h,10.5rem)}
   .film-video{position:relative;display:block;width:100%;height:auto;
     aspect-ratio:16/9;object-fit:contain;opacity:1}
   .film::after{display:none}

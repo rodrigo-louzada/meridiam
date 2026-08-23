@@ -2,6 +2,8 @@
 (function () {
   'use strict';
 
+  var filmWatcher;   // kept alive for the lifetime of the page
+
   // Dateline stamp in the utility bar.
   var stamp = document.getElementById('stamp');
   if (stamp) {
@@ -33,6 +35,46 @@
     var p = v.play();
     // Autoplay can still be refused (iOS Low Power Mode, strict settings).
     if (p && p.catch) p.catch(function () { v.removeAttribute('src'); });
+  })();
+
+  // Header. Fixed, so it travels with the scroll. Two states:
+  //   .over-film — transparent, masthead logo withheld while the film's own
+  //                burned-in wordmark is on screen
+  //   .compact   — pinned past the film: solid, utility strip collapsed
+  (function () {
+    var bar = document.querySelector('.topbar');
+    var film = document.querySelector('.film');
+    if (!bar) return;
+
+    // Narrow screens lay the film out below the bar rather than behind it,
+    // so the film needs to know how tall the bar is.
+    var setH = function () {
+      document.documentElement.style.setProperty(
+        '--topbar-h', bar.getBoundingClientRect().height + 'px');
+    };
+    if (bar.classList.contains('over-film')) setH();
+    addEventListener('resize', function () {
+      if (bar.classList.contains('over-film')) setH();
+    });
+
+    if (!film || !('IntersectionObserver' in window)) {
+      bar.classList.remove('over-film');
+      return;
+    }
+
+    // Shrink the observation area by the masthead's height so the swap lands
+    // exactly as the film clears the bar, not a screen-height early.
+    var mast = bar.querySelector('.masthead');
+    var top = mast ? Math.round(mast.getBoundingClientRect().bottom) : 90;
+
+    // Held in a variable on purpose: an IntersectionObserver with no live
+    // reference can be collected, which silently stops the callbacks.
+    filmWatcher = new IntersectionObserver(function (entries) {
+      var over = entries[entries.length - 1].isIntersecting;
+      bar.classList.toggle('over-film', over);
+      bar.classList.toggle('compact', !over);
+    }, { rootMargin: -top + 'px 0px 0px 0px', threshold: 0 });
+    filmWatcher.observe(film);
   })();
 
   // Mobile nav disclosure.
