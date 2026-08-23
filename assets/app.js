@@ -46,17 +46,6 @@
     var film = document.querySelector('.film');
     if (!bar) return;
 
-    // Narrow screens lay the film out below the bar rather than behind it,
-    // so the film needs to know how tall the bar is.
-    var setH = function () {
-      document.documentElement.style.setProperty(
-        '--topbar-h', bar.getBoundingClientRect().height + 'px');
-    };
-    if (bar.classList.contains('over-film')) setH();
-    addEventListener('resize', function () {
-      if (bar.classList.contains('over-film')) setH();
-    });
-
     // The collapsed height is needed up front: it sets both the anchor
     // offset and the point at which the bar takes over from the film.
     // Measured by applying .compact synchronously with transitions off, so

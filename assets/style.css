@@ -147,7 +147,7 @@ p{margin:0 0 1rem}
 /* Film opener ------------------------------------------------ */
 /* Poster as background so it paints immediately; the video fades in over it. */
 .film{position:relative;overflow:hidden;background:#04101F url(./poster.jpg) center/cover no-repeat;
-  height:100vh;height:100svh}
+  width:100%;aspect-ratio:16/9}
 .film-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   opacity:0;transition:opacity .9s ease}
 .film-video.playing{opacity:1}
@@ -163,8 +163,6 @@ p{margin:0 0 1rem}
 @keyframes cue{0%,100%{opacity:0;transform:translateY(0)}
   35%{opacity:1}70%{opacity:0;transform:translateY(12px)}}
 
-/* The wordmark is burned into the footage and spans most of the frame width,
-   so a phone-shaped crop would clip it. Letterbox on narrow screens instead. */
 @media (prefers-reduced-motion:reduce){.film-cue span{animation:none;opacity:.85}}
 
 /* Used for one synchronous measurement at load; never painted. */
@@ -385,15 +383,10 @@ footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(
   font-family:var(--f-mono);font-size:.66rem;color:var(--ink-inv-2)}
 
 /* Film on narrow screens ------------------------------------- */
-/* Placed last so it overrides the base .topbar and .film rules above.
-   The masthead joins the normal flow rather than floating over the film,
-   so the letterboxed frame sits directly beneath it with no dead space. */
+/* The film holds 16:9 everywhere, so on a phone it is only ~9/16 of the width
+   tall. The utility strip wraps to three lines there and would cover most of
+   it, so the masthead alone sits over the video. That contact detail is still
+   in the contact section and the footer. Placed last to beat the base rule. */
 @media (max-width:760px){
-  .film{height:auto;background:#04101F;padding-bottom:.5rem;
-    padding-top:var(--topbar-h,10.5rem)}
-  .film-video{position:relative;display:block;width:100%;height:auto;
-    aspect-ratio:16/9;object-fit:contain;opacity:1}
-  .film::after{display:none}
-  .film-cue{position:relative;display:block;left:auto;bottom:auto;transform:none;
-    margin:1.6rem auto .6rem}
+  .util{display:none}
 }
