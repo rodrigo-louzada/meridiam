@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Same policy as the site, so this page reproduces production conditions. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; base-uri 'self'; form-action 'self'">
+<meta name="robots" content="noindex, nofollow">
+<title>Meridiam — film diagnostics</title>
+<link rel="stylesheet" href="assets/style.css">
+<style>
+  body{background:#061A33;color:#fff;font-family:ui-monospace,Menlo,Consolas,monospace;
+       margin:0;padding:1rem;-webkit-text-size-adjust:100%}
+  h1{font-size:1rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 .2rem}
+  .lead{font-size:.8rem;color:#9DB4D0;margin:0 0 1.2rem;line-height:1.5}
+  #verdict{font-size:1.15rem;font-weight:700;padding:.7rem .9rem;border:1px solid #2B5D96;
+           margin:0 0 1rem;letter-spacing:.06em}
+  #verdict.ok{background:#0C3D24;border-color:#1E8C55}
+  #verdict.bad{background:#4A1420;border-color:#B03A52}
+  h2{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#9DB4D0;
+     margin:1.4rem 0 .5rem}
+  .panel{border:1px solid #1B4680;margin-bottom:.6rem}
+  .film{aspect-ratio:16/9}
+  .ctrl-video{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#04101F}
+  #out{white-space:pre-wrap;word-break:break-word;font-size:.72rem;line-height:1.5;
+       background:#04101F;border:1px solid #1B4680;padding:.8rem;margin:0;
+       user-select:text;-webkit-user-select:text}
+  button{font:inherit;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
+         background:#0D2C56;color:#fff;border:1px solid #2B5D96;padding:.7rem 1.2rem;
+         margin:0 0 1rem;cursor:pointer}
+</style>
+</head>
+<body>
+
+<h1>Film diagnostics</h1>
+<p class="lead">Open this on the phone that shows a still image, wait about five seconds,
+then screenshot this whole page (or tap Copy report and paste it back).
+Do not tap the video first — that would start it by hand and hide the problem.</p>
+
+<div id="verdict">measuring…</div>
+<button id="copy" type="button">Copy report</button>
+
+<h2>1 — the real site film</h2>
+<p class="lead">Identical markup to the homepage, running the real script.</p>
+<div class="panel">
+  <section class="film" aria-label="Film under test">
+    <video class="film-video" poster="assets/poster.jpg" muted loop playsinline autoplay preload="none"
+           data-src-wide="assets/hero-1080.mp4"
+           data-src-narrow="assets/hero-720.mp4"></video>
+    <button class="film-play" type="button" aria-label="Play the film">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l15 9-15 9z"/></svg>
+    </button>
+  </section>
+</div>
+
+<h2>2 — plain video, no script at all</h2>
+<p class="lead">If this one moves and the one above does not, the fault is our code.
+If neither moves, the phone is refusing autoplay.</p>
+<div class="panel">
+  <video class="ctrl-video" src="assets/hero-720.mp4" poster="assets/poster.jpg"
+         muted loop playsinline autoplay preload="metadata"></video>
+</div>
+
+<h2>3 — report</h2>
+<pre id="out">collecting…</pre>
+
+<script src="assets/diag.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

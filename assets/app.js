@@ -36,46 +36,62 @@
     // 720p for phones, 1080p above. Chosen once — swapping later would
     // re-download the footage.
     var narrow = window.matchMedia('(max-width: 760px)').matches;
-    v.src = v.getAttribute(narrow ? 'data-src-narrow' : 'data-src-wide');
+    var src = v.getAttribute(narrow ? 'data-src-narrow' : 'data-src-wide');
+    v.src = src;
     v.load();                        // preload="none" needs the explicit kick
 
     var armed = false;
+    var reloads = 0;                 // bounded, so a genuinely broken file settles
 
-    var attempt = function () {
-      var p = v.play();
-      if (!p || !p.catch) return;
-      p.catch(function (err) {
-        // NotAllowedError is a policy refusal rather than a broken file —
-        // iOS Low Power Mode blocks autoplay even for muted inline video.
-        // Keep the source and wait for a gesture instead of discarding it.
-        if (!err || err.name === 'NotAllowedError') arm();
-      });
-    };
+    var onGesture = function () { disarm(); attempt(); };
 
-    var retry = function () { armed = false; attempt(); };
-
+    // Offer the tap fallback: the poster is on screen and something has to let
+    // the viewer past it.
     var arm = function () {
       if (armed) return;
       armed = true;
       film.classList.add('needs-tap');
       // A gesture anywhere counts, so most viewers never have to find the
       // button. Passive: this never calls preventDefault.
-      document.addEventListener('touchend', retry, { once: true, passive: true });
-      document.addEventListener('click', retry, { once: true });
+      document.addEventListener('touchend', onGesture, { passive: true });
+      document.addEventListener('click', onGesture);
     };
 
-    v.addEventListener('playing', function () {
-      film.classList.remove('needs-tap');
+    var disarm = function () {
       armed = false;
-    });
-    // A real decode or network failure: fall back to the poster for good.
-    v.addEventListener('error', function () {
-      v.removeAttribute('src');
       film.classList.remove('needs-tap');
-    });
+      document.removeEventListener('touchend', onGesture);
+      document.removeEventListener('click', onGesture);
+    };
+
+    var attempt = function () {
+      // An element that failed to load will not play again until it is given a
+      // fresh source. A phone losing signal mid-download is ordinary, so this
+      // is worth a couple of goes before giving up on the footage entirely.
+      if (v.error) {
+        if (reloads >= 2) { disarm(); return; }
+        reloads++;
+        v.src = src;
+        v.load();
+      }
+      var p = v.play();
+      if (!p || !p.catch) return;
+      // Any rejection at all, not just NotAllowedError. Low Power Mode refuses
+      // autoplay with NotAllowedError, but WebKit also rejects a pending play
+      // with AbortError whenever it drops or reloads the media — on slow
+      // cellular, on backgrounding the tab, on a power-mode change. Returning
+      // silently there stranded the viewer on a still frame with no way out.
+      p.catch(arm);
+    };
+
+    v.addEventListener('playing', disarm);
+    v.addEventListener('error', arm);
+    // If the first attempt simply lost a race with the network, the source
+    // becoming ready is another chance — taken without needing a gesture.
+    v.addEventListener('canplay', function () { if (armed) onGesture(); });
 
     if (btn) {
-      btn.addEventListener('click', function (e) { e.stopPropagation(); retry(); });
+      btn.addEventListener('click', function (e) { e.stopPropagation(); onGesture(); });
     }
 
     attempt();
