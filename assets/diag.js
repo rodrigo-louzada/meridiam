@@ -64,11 +64,21 @@
     return L;
   }
 
+  // "Playing" means the clock is actually moving. paused===false is not enough:
+  // a stalled element reports it while sitting on frame zero.
   var startT = {};
-  function advanced(v, key) {
-    if (!v) return null;
-    if (startT[key] === undefined) { startT[key] = v.currentTime; return null; }
-    return v.currentTime > startT[key] + 0.05;
+  var seen = {};
+  function motion(v, key) {
+    if (!v) return { known: false, txt: 'element missing' };
+    if (startT[key] === undefined) { startT[key] = v.currentTime; seen[key] = 0; }
+    var d = v.currentTime - startT[key];
+    if (d > seen[key]) seen[key] = d;
+    var moved = seen[key] > 0.05;
+    return {
+      known: true, moved: moved,
+      txt: (moved ? 'YES' : 'NO ') + '  (advanced ' + seen[key].toFixed(2) + 's, now at ' +
+           v.currentTime.toFixed(2) + 's)'
+    };
   }
 
   var fetchInfo = ['  (checking...)'];
@@ -81,13 +91,13 @@
     var c = navigator.connection || {};
     var L = [];
 
-    var realOk = advanced(real, 'real');
-    var ctrlOk = advanced(ctrl, 'ctrl');
+    var realOk = motion(real, 'real');
+    var ctrlOk = motion(ctrl, 'ctrl');
 
     L.push('=== VERDICT ===');
-    L.push('Site video actually moving : ' + (realOk === null ? 'measuring...' : (realOk ? 'YES' : 'NO')));
-    L.push('Plain video actually moving: ' + (ctrlOk === null ? 'measuring...' : (ctrlOk ? 'YES' : 'NO')));
-    L.push('Tap-to-play button shown   : ' + (film && film.classList.contains('needs-tap') ? 'YES' : 'no'));
+    L.push('Site film moving  : ' + realOk.txt);
+    L.push('Plain video moving: ' + ctrlOk.txt);
+    L.push('Tap-to-play shown : ' + (film && film.classList.contains('needs-tap') ? 'YES' : 'no'));
     L.push('');
 
     L.push('=== play() CALLS ===');
@@ -129,10 +139,8 @@
     document.getElementById('out').textContent = L.join('\n');
 
     var v = document.getElementById('verdict');
-    if (realOk !== null) {
-      v.textContent = realOk ? 'FILM IS PLAYING' : 'FILM IS NOT PLAYING';
-      v.className = realOk ? 'ok' : 'bad';
-    }
+    v.textContent = realOk.moved ? 'FILM IS PLAYING' : 'FILM IS NOT PLAYING';
+    v.className = realOk.moved ? 'ok' : 'bad';
   }
 
   // Confirm the phone can reach the footage, separately from decoding it.
