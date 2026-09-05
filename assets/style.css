@@ -147,8 +147,17 @@ p{margin:0 0 1rem}
 /* Film opener ------------------------------------------------ */
 /* Poster as background so it paints immediately, and it stays the backdrop
    for reduced-motion, no-JS and blocked-autoplay viewers. */
+/* Every child here is absolutely positioned, so the section has no height of
+   its own — it comes entirely from the 16:9 ratio. A browser without
+   aspect-ratio (Safari 14 and earlier, so iOS 14 and the in-app browsers
+   built on it) therefore collapsed the opener to nothing and dropped the
+   viewer straight into the content. The padding keeps the same ratio there;
+   it is a percentage of the width, so 56.25% is 9/16. */
 .film{position:relative;overflow:hidden;background:#04101F url(./poster.jpg) center/cover no-repeat;
-  width:100%;aspect-ratio:16/9}
+  width:100%;padding-top:56.25%}
+@supports (aspect-ratio:16/9){
+  .film{padding-top:0;aspect-ratio:16/9}
+}
 /* Deliberately never faded in from opacity:0. WebKit only autoplays a video
    it considers visible, and pauses one that stops being visible, so waiting
    for 'playing' before revealing it prevents the very playback it waits on -
