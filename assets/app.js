@@ -4,6 +4,13 @@
 
   var filmWatcher;   // kept alive for the lifetime of the page
 
+  // Opening the site should open on the film. Browsers restore the scroll
+  // position of the last visit by default, so anyone reloading or reopening
+  // the tab landed in the middle of the page instead — the one thing an
+  // opener exists to prevent. Deliberate deep links are untouched: a URL
+  // carrying a #fragment still goes to its section.
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+
   // Dateline stamp in the utility bar.
   var stamp = document.getElementById('stamp');
   if (stamp) {
