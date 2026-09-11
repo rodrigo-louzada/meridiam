@@ -1,103 +1,3 @@
-/* latin-ext */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(./fonts/barlow-400-latin-ext.woff2) format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* latin */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(./fonts/barlow-400-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* latin-ext */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(./fonts/barlow-500-latin-ext.woff2) format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* latin */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(./fonts/barlow-500-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* latin-ext */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(./fonts/barlow-600-latin-ext.woff2) format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* latin */
-@font-face {
-  font-family: 'Barlow';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url(./fonts/barlow-600-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* latin-ext */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(./fonts/ibm-plex-mono-400-latin-ext.woff2) format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* latin */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url(./fonts/ibm-plex-mono-400-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-/* latin-ext */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(./fonts/ibm-plex-mono-500-latin-ext.woff2) format('woff2');
-  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-
-/* latin */
-@font-face {
-  font-family: 'IBM Plex Mono';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url(./fonts/ibm-plex-mono-500-latin.woff2) format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
 /* ═══════════════════════════════════════════════════════════════
    MERIDIAM MARITIME — draft v5
    Positioning: trading house, not shipping company.
@@ -111,8 +11,9 @@
   --ink:#0A1F3A; --ink-2:#4C617C; --ink-3:#6B7F98;
   --ink-inv:#B6C6DA; --ink-inv-2:#7B93B0;
   --rule:#DBE2EB; --rule-dark:#1A3557; --steel:#8FAECF;
-  --f-sans:"Barlow",system-ui,-apple-system,sans-serif;
-  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+  /* Arial. It ships on Windows, macOS, iOS and Android, so the page looks the
+     same almost everywhere and downloads no font files. */
+  --f-sans:Arial,"Helvetica Neue",Helvetica,sans-serif;
   --gutter:clamp(1.25rem,4.5vw,4.5rem); --max:1260px; --pad:clamp(3.5rem,6.5vw,6rem);
 }
 *{box-sizing:border-box}
@@ -216,9 +117,9 @@ p{margin:0 0 1rem}
 .topbar.compact .util-in{padding-block:0}
 .topbar.compact .masthead{padding-block:1rem}
 .topbar.over-film .util{border-bottom-color:rgba(255,255,255,.15)}
-.util-in{display:flex;flex-wrap:wrap;gap:.4rem 2rem;justify-content:flex-end;padding-block:.55rem;
+.util-in{display:flex;flex-wrap:wrap;gap:.5rem 2.4rem;justify-content:flex-end;padding-block:1rem;
   transition:padding-block .35s ease;
-  font-family:var(--f-mono);font-size:.7rem;color:var(--ink-inv-2)}
+  font-size:.82rem;color:var(--ink-inv-2)}
 .util-in a{text-decoration:none}
 .util-in a:hover{color:#fff}
 .util-in .live{color:var(--steel)}
@@ -272,8 +173,11 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .tagline{font-size:clamp(1.15rem,1.7vw,1.5rem);font-weight:500;color:var(--steel);
   letter-spacing:-.01em;margin:0 0 1.3rem}
 /* The statement — Element's move: one sentence that defines the business */
+/* The measure, not the size, sets how this breaks. Arial's capitals are wider
+   than the face this was drawn for, and at 26ch the sentence had spilled onto
+   a sixth line; 30ch puts it back on five at every width. */
 .hero h1{font-size:clamp(1.35rem,2.55vw,2.15rem);line-height:1.22;text-transform:uppercase;
-  letter-spacing:-.005em;max-width:26ch;margin-bottom:1.9rem}
+  letter-spacing:-.005em;max-width:30ch;margin-bottom:1.9rem}
 .hero-body{max-width:64ch;margin-bottom:2.4rem}
 .hero-body p{color:var(--ink-inv);font-size:clamp(.95rem,.6vw + .82rem,1.04rem);margin-bottom:1.05rem}
 .hero-body p:last-child{margin-bottom:0}
@@ -299,11 +203,11 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .tmap{display:block;width:100%;height:auto}
 .rngc{background:var(--paper);padding:1.5rem 1.4rem}
 .rngc h4{margin-bottom:.4rem}
-.rngc p{font-family:var(--f-mono);font-size:.71rem;color:var(--ink-3);margin:0;line-height:1.55}
+.rngc p{font-family:var(--f-sans);font-size:.71rem;color:var(--ink-3);margin:0;line-height:1.55}
 .plists{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1.5rem,4vw,3.5rem);margin-top:3rem}
 @media (max-width:760px){.plists{grid-template-columns:1fr;gap:2rem}}
 .plist h4{margin-bottom:.9rem;padding-bottom:.7rem;border-bottom:1px solid var(--rule)}
-.plist ul{list-style:none;margin:0;padding:0;font-family:var(--f-mono);font-size:.81rem;color:var(--ink-2)}
+.plist ul{list-style:none;margin:0;padding:0;font-family:var(--f-sans);font-size:.81rem;color:var(--ink-2)}
 .plist li{padding:.4rem 0;border-bottom:1px solid var(--paper-3)}
 
 /* Positions -------------------------------------------------- */
@@ -311,24 +215,31 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .positions .eyebrow{color:var(--steel)}
 .positions .lede{color:var(--ink-inv)}
 .board{border:1px solid var(--rule-dark);background:var(--navy-800);margin-top:2.4rem}
-.board-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.6rem;padding:.95rem 1.2rem;
-  border-bottom:1px solid var(--rule-dark);font-size:.68rem;font-weight:500;letter-spacing:.19em;
-  text-transform:uppercase;color:var(--ink-inv)}
-.prow{display:grid;grid-template-columns:minmax(0,1.6fr) .7fr 1.1fr 1fr;gap:1rem;align-items:baseline;
-  padding:.9rem 1.2rem;border-bottom:1px solid var(--rule-dark);font-family:var(--f-mono);font-size:.8rem;color:var(--ink-inv)}
+/* Five columns, the last one for the particulars download. It is a fixed
+   width on purpose: the heading row and the vessel rows are separate grids,
+   so an auto track sized itself to each one's own contents — the word
+   DETAILS in the header, the PDF button in the rows — and the two sets of
+   columns drifted apart. A fixed track makes both resolve identically. */
+.prow{display:grid;grid-template-columns:minmax(0,1.6fr) .7fr 1.1fr 1fr 4.5rem;gap:1rem;align-items:baseline;
+  padding:.9rem 1.2rem;border-bottom:1px solid var(--rule-dark);font-size:.8rem;color:var(--ink-inv)}
 .prow:last-of-type{border-bottom:0}
 .prow.h{font-size:.62rem;letter-spacing:.17em;text-transform:uppercase;color:var(--ink-inv-2)}
-.prow .v{font-family:var(--f-sans);font-weight:600;font-size:1rem;color:#fff}
+.prow .v{font-weight:600;font-size:1rem;color:#fff}
 .prow .flag{color:#fff;font-weight:500}
+.prow .pdf{text-align:right}
+.prow .pdf a{display:inline-block;color:#fff;text-decoration:none;
+  font-size:.64rem;font-weight:500;letter-spacing:.17em;text-transform:uppercase;
+  padding:.3rem .6rem;border:1px solid var(--rule-dark);transition:border-color .2s,background .2s}
+.prow .pdf a:hover{border-color:var(--steel);background:var(--navy-700)}
 @media (max-width:800px){
   .prow{grid-template-columns:1fr 1fr;gap:.25rem .9rem;padding-block:1.05rem}
   .prow.h{display:none}
   .prow .v{grid-column:1/-1;font-size:1.1rem}
   .prow .n{grid-column:1/-1;padding-top:.3rem;color:var(--ink-inv-2)}
+  /* Its own line rather than squeezed against the dates. */
+  .prow .pdf{grid-column:1/-1;text-align:left;padding-top:.7rem}
+  .prow .pdf:empty{padding-top:0}
 }
-.board-foot{padding:.95rem 1.2rem;border-top:1px solid var(--rule-dark);font-family:var(--f-mono);font-size:.7rem;
-  color:var(--ink-inv-2);display:flex;flex-wrap:wrap;gap:.5rem 2rem;justify-content:space-between}
-.board-foot a{color:#fff}
 
 /* Team ------------------------------------------------------- */
 .team{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--rule);border:1px solid var(--rule)}
@@ -339,14 +250,19 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .portrait img{display:block;width:100%;height:100%;object-fit:cover}
 .member .body{padding:1.4rem 1.4rem 1.6rem}
 .member h4{margin-bottom:.2rem;font-size:1.1rem}
-.member .role{font-family:var(--f-mono);font-size:.7rem;color:var(--ink-3);margin-bottom:.8rem}
+.member .role{font-family:var(--f-sans);font-size:.7rem;color:var(--ink-3);margin-bottom:.8rem}
 .member p{font-size:.9rem;color:var(--ink-2);margin:0 0 .9rem}
-.member .em{display:block;font-family:var(--f-mono);font-size:.75rem;color:var(--navy);
+.member .em{display:block;font-family:var(--f-sans);font-size:.75rem;color:var(--navy);
   text-decoration:none;word-break:break-all}
 .member .em:hover{text-decoration:underline}
-.member .tel{display:block;margin-top:.35rem;font-family:var(--f-mono);font-size:.75rem;
+.member .tel{display:block;margin-top:.35rem;font-family:var(--f-sans);font-size:.75rem;
   color:var(--ink-3);text-decoration:none}
 .member .tel:hover{color:var(--navy)}
+/* Someone not on the desk yet. Set apart from the description so it reads as
+   a status rather than as another line about what they do. */
+.member .joining{display:inline-block;margin:0 0 .9rem;padding:.3rem .6rem;
+  background:var(--paper-3);color:var(--navy);
+  font-size:.62rem;font-weight:500;letter-spacing:.17em;text-transform:uppercase}
 
 /* Contact + footer ------------------------------------------- */
 .contact{background:var(--navy-900);color:#fff}
@@ -357,7 +273,7 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .phones{display:flex;flex-wrap:wrap;gap:.2rem 2.4rem;margin:.5rem 0 .9rem}
 /* Sits directly under the number, as a second way to reach the same desks. */
 .cmails{display:flex;flex-wrap:wrap;gap:.45rem 2.2rem;margin:0 0 2.6rem}
-.cmails a{font-family:var(--f-mono);font-size:.88rem;color:var(--steel);text-decoration:none}
+.cmails a{font-family:var(--f-sans);font-size:.88rem;color:var(--steel);text-decoration:none}
 .cmails a:hover{color:#fff}
 .phone{display:block;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:600;letter-spacing:-.02em;color:#fff;
   text-decoration:none;white-space:nowrap}
@@ -396,7 +312,7 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 /* Coastlines run under the labels wherever a city sits on a crowded coast.
    paint-order draws the stroke first, so this reads as a cut-out halo in the
    sea colour rather than an outline on the letters. */
-.map-label{fill:#fff;font-family:var(--f-mono);font-size:15px;letter-spacing:.22em;
+.map-label{fill:#fff;font-family:var(--f-sans);font-size:15px;letter-spacing:.22em;
   paint-order:stroke fill;stroke:#04101F;stroke-width:4.5px;stroke-linejoin:round}
 @media (prefers-reduced-motion:no-preference){
   .map-halo{animation:ping 3.4s ease-out infinite}
@@ -405,7 +321,7 @@ nav a:hover{color:#fff;border-bottom-color:var(--steel)}
 .office-card{background:var(--navy-800);padding:1.7rem 1.5rem}
 .office-card h3{margin-bottom:.7rem;color:#fff}
 .office-card address{font-style:normal;font-size:.92rem;color:#fff;line-height:1.6}
-.office-card .office-tel{display:inline-block;margin-top:.9rem;font-family:var(--f-mono);
+.office-card .office-tel{display:inline-block;margin-top:.9rem;font-family:var(--f-sans);
   font-size:.8rem;color:var(--steel);text-decoration:none}
 .office-card .office-tel:hover{color:#fff}
 .contact .office-note{font-size:.86rem;color:var(--ink-inv-2);margin:1.2rem 0 0}
@@ -439,7 +355,7 @@ footer{background:var(--navy-900);color:var(--ink-inv);border-top:1px solid var(
   display:inline-flex;margin-top:.9rem}
 .fplate img{height:30px;width:auto}
 .fbot{display:flex;flex-wrap:wrap;gap:.5rem 2rem;justify-content:space-between;padding-top:1.5rem;
-  font-family:var(--f-mono);font-size:.66rem;color:var(--ink-inv-2)}
+  font-family:var(--f-sans);font-size:.66rem;color:var(--ink-inv-2)}
 
 /* Film on narrow screens ------------------------------------- */
 /* The film holds 16:9 everywhere, so on a phone it is only ~9/16 of the width

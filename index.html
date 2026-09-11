@@ -24,8 +24,6 @@
 <meta property="og:url" content="https://rodrigo-louzada.github.io/meridiam/">
 <meta name="twitter:card" content="summary_large_image">
 
-<link rel="preload" href="assets/fonts/barlow-600-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="assets/fonts/ibm-plex-mono-400-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/style.css">
 <noscript><style>
 .topbar.over-film{background:rgba(6,26,51,.94);border-bottom-color:var(--rule-dark)}
@@ -41,7 +39,7 @@
     <span class="live">Positions circulated 08:00 CET, Mon–Fri</span>
     <a href="tel:+34600663095">+34 600 66 30 95</a>
     <a href="tel:+306970401193">+30 697 040 1193</a>
-    <a href="mailto:chartering@meridiammaritime.com">chartering@meridiammaritime.com</a>
+    <a href="mailto:chartering@meridiam-maritime.com">chartering@meridiam-maritime.com</a>
     <span>Operations attended 24/7</span>
   </div>
 </div>
@@ -69,8 +67,8 @@
      instantly, and remains the backdrop for reduced-motion and no-JS viewers. -->
 <section class="film" aria-label="Meridiam Maritime at sea">
   <video class="film-video" poster="assets/poster.jpg" muted loop playsinline autoplay preload="none"
-         data-src-wide="assets/hero-1080.mp4"
-         data-src-narrow="assets/hero-720.mp4"></video>
+         data-src-wide="assets/video.mp4"
+         data-src-narrow="assets/video.mp4"></video>
   <button class="film-play" type="button" aria-label="Play the film">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3l15 9-15 9z"/></svg>
   </button>
@@ -108,8 +106,6 @@
     </div>
   </div>
   <div class="wrap">
-    <p class="tagline">We take the position.</p>
-
     <h1>Meridiam Maritime is an integrated short-sea operator working 3,000–5,000 DWCC tonnage across the European ranges.</h1>
 
     <div class="hero-body">
@@ -173,23 +169,20 @@
       <h2 style="color:#fff">Our tonnage.</h2>
       <p class="lede">The position list goes out to brokers and principals at 08:00 CET each business day. Enquiries on positions, cargoes or market conditions are welcome at any hour.</p>
     </div>
+    <!-- Rows come from assets/fleet.json so the list can be kept up to date
+         without touching this file. What is written here is the fallback,
+         used if that file is missing or cannot be read. -->
     <div class="board">
-      <div class="board-head">
-        <span>Open position list — all subject unfixed</span>
-        <span>Issued <span id="stamp">—</span></span>
-      </div>
-      <div class="prow h"><span>Vessel</span><span>DWCC</span><span>Open</span><span>Laycan</span></div>
-      <div class="prow"><span class="v">Vessel name</span><span>3,700</span><span>Rotterdam</span>
-        <span class="flag">Prompt</span></div>
-      <div class="prow"><span class="v">Vessel name</span><span>4,500</span><span>Gdynia</span>
-        <span>09–12 Aug</span></div>
-      <div class="prow"><span class="v">Vessel name</span><span>4,100</span><span>Iskenderun</span>
-        <span>11–15 Aug</span></div>
-      <div class="prow"><span class="v">Vessel name</span><span>3,300</span><span>Setúbal</span>
-        <span class="flag">Prompt</span></div>
-      <div class="board-foot">
-        <span>Issued 08:00 CET, Monday to Friday. Illustrative entries.</span>
-        <a href="#contact">Request the daily list →</a>
+      <div class="prow h"><span>Vessel</span><span>DWCC</span><span>Open</span><span>Dates</span><span>Details</span></div>
+      <div id="fleet-rows">
+        <div class="prow"><span class="v">Vessel name</span><span>3,700</span><span>Rotterdam</span>
+          <span class="flag">Prompt</span><span></span></div>
+        <div class="prow"><span class="v">Vessel name</span><span>4,500</span><span>Gdynia</span>
+          <span>09–12 Aug</span><span></span></div>
+        <div class="prow"><span class="v">Vessel name</span><span>4,100</span><span>Iskenderun</span>
+          <span>11–15 Aug</span><span></span></div>
+        <div class="prow"><span class="v">Vessel name</span><span>3,300</span><span>Setúbal</span>
+          <span class="flag">Prompt</span><span></span></div>
       </div>
     </div>
   </div>
@@ -203,25 +196,26 @@
     </div>
     <div class="team">
       <div class="member">
-        <div class="portrait"><img src="assets/team-antonio-cortesao.jpg" alt="" width="760" height="950" loading="lazy" decoding="async"></div>
+        <div class="portrait"><img src="assets/team-antonio-cortesao.jpg" alt="" width="1122" height="1402" loading="lazy" decoding="async"></div>
         <div class="body"><h4>António Cortesão</h4><p class="role">Freight trader · Director</p>
           <p>Short-sea dry cargo across the Continent, UK, Irish Sea, Baltic and Scandinavia ranges.</p>
-          <a class="em" href="mailto:chartering@meridiammaritime.com">chartering@meridiammaritime.com</a>
+          <a class="em" href="mailto:chartering@meridiam-maritime.com">chartering@meridiam-maritime.com</a>
           <a class="tel" href="tel:+306970401193">+30 697 040 1193</a></div>
       </div>
       <div class="member">
-        <div class="portrait"><img src="assets/team-ruben-rodrigues.jpg" alt="" width="760" height="950" loading="lazy" decoding="async"></div>
+        <div class="portrait"><img src="assets/team-ruben-rodrigues.jpg" alt="" width="1122" height="1402" loading="lazy" decoding="async"></div>
         <div class="body"><h4>Ruben Rodrigues</h4><p class="role">Freight trader · Director</p>
           <p>Short-sea dry cargo across the Biscay Bay, Iberia and Morocco, full Mediterranean and Black Sea ranges.</p>
-          <a class="em" href="mailto:chartering@meridiammaritime.com">chartering@meridiammaritime.com</a>
+          <a class="em" href="mailto:chartering@meridiam-maritime.com">chartering@meridiam-maritime.com</a>
           <a class="tel" href="tel:+34600663095">+34 600 66 30 95</a></div>
       </div>
       <div class="member">
-        <div class="portrait"><img src="assets/team-jon-lopez.jpg" alt="" width="760" height="950" loading="lazy" decoding="async"></div>
+        <div class="portrait"><img src="assets/team-jon-lopez.jpg" alt="" width="1122" height="1402" loading="lazy" decoding="async"></div>
         <div class="body"><h4>Jon López de Dicastillo</h4><p class="role">Operations</p>
           <p>Port calls, bunkers, laytime and final accounts, from recap to settlement.</p>
-          <a class="em" href="mailto:operations@meridiammaritime.com">operations@meridiammaritime.com</a>
-          <a class="tel" href="tel:+34646946193">+34 646 94 61 93</a></div>
+          <p class="joining">Joining on 28 September</p>
+          <a class="em" href="mailto:operations@meridiam-maritime.com">operations@meridiam-maritime.com</a>
+          <a class="tel" href="tel:+34682492561">+34 682 49 25 61</a></div>
       </div>
     </div>
   </div>
@@ -239,8 +233,8 @@
       <a class="phone" href="tel:+34600663095">+34 600 66 30 95</a>
     </div>
     <div class="cmails">
-      <a href="mailto:chartering@meridiammaritime.com">chartering@meridiammaritime.com</a>
-      <a href="mailto:operations@meridiammaritime.com">operations@meridiammaritime.com</a>
+      <a href="mailto:chartering@meridiam-maritime.com">chartering@meridiam-maritime.com</a>
+      <a href="mailto:operations@meridiam-maritime.com">operations@meridiam-maritime.com</a>
     </div>
     <!-- Office locator. The maps are inline SVG built from Natural Earth's
          public-domain coastline, so they need no tiles, no API key and no
@@ -260,7 +254,7 @@
         <div class="office-card">
           <h3>Bilbao</h3>
           <address>Barroeta Aldamar 2, 1º Piso<br>48001 Bilbao<br>Spain</address>
-          <a class="office-tel" href="tel:+34646946193">+34 646 94 61 93</a>
+          <a class="office-tel" href="tel:+34682492561">+34 682 49 25 61</a>
         </div>
         <div class="office-card">
           <h3>Athens</h3>
@@ -292,12 +286,12 @@
         <li><a href="#contact">Contact</a></li>
       </ul></div>
       <div><h5>Enquiries</h5><ul>
-        <li><a href="mailto:chartering@meridiammaritime.com">Chartering</a></li>
-        <li><a href="mailto:operations@meridiammaritime.com">Operations</a></li>
+        <li><a href="mailto:chartering@meridiam-maritime.com">Chartering</a></li>
+        <li><a href="mailto:operations@meridiam-maritime.com">Operations</a></li>
       </ul></div>
       <div><h5>Offices</h5>
         <p>Madrid · <a href="tel:+34600663095">+34 600 66 30 95</a></p>
-        <p>Bilbao · <a href="tel:+34646946193">+34 646 94 61 93</a></p>
+        <p>Bilbao · <a href="tel:+34682492561">+34 682 49 25 61</a></p>
         <p>Athens · <a href="tel:+306970401193">+30 697 040 1193</a></p>
         <p style="margin-top:1rem;color:var(--ink-inv-2)">Operations attended 24/7</p>
       </div>

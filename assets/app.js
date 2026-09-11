@@ -11,13 +11,61 @@
   // carrying a #fragment still goes to its section.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-  // Dateline stamp in the utility bar.
-  var stamp = document.getElementById('stamp');
-  if (stamp) {
-    stamp.textContent = new Date().toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    }) + ' · 08:00 CET';
-  }
+  // Open positions. The rows live in assets/fleet.json so the list can be kept
+  // current by editing one small file — on github.com if need be — without
+  // going near the markup. The rows already in the page are the fallback, so a
+  // missing or malformed file leaves the board standing rather than empty.
+  (function () {
+    var host = document.getElementById('fleet-rows');
+    if (!host || !window.fetch) return;
+
+    var cell = function (text, cls) {
+      var s = document.createElement('span');
+      if (cls) s.className = cls;
+      s.textContent = text == null ? '' : String(text);   // never parsed as markup
+      return s;
+    };
+
+    var row = function (v) {
+      var r = document.createElement('div');
+      r.className = 'prow';
+      r.appendChild(cell(v.name, 'v'));
+      r.appendChild(cell(v.dwcc));
+      r.appendChild(cell(v.open));
+      // "Prompt" is the one value worth picking out of the column.
+      r.appendChild(cell(v.dates, /^\s*prompt\s*$/i.test(v.dates || '') ? 'flag' : null));
+
+      var last = document.createElement('span');
+      last.className = 'pdf';
+      if (v.pdf) {
+        var a = document.createElement('a');
+        a.href = v.pdf;
+        a.setAttribute('download', '');
+        a.textContent = 'PDF';
+        a.setAttribute('aria-label', 'Download the particulars for ' + (v.name || 'this vessel'));
+        last.appendChild(a);
+      }
+      r.appendChild(last);
+      return r;
+    };
+
+    fetch('assets/fleet.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (data) {
+        var list = data && data.vessels;
+        if (!list || !list.length) return;          // keep the fallback rows
+        var frag = document.createDocumentFragment();
+        list.forEach(function (v) { frag.appendChild(row(v)); });
+        host.textContent = '';
+        host.appendChild(frag);
+
+        // A column heading with nothing under it reads as a fault. The
+        // Details header earns its place only once a vessel carries a PDF.
+        var head = document.querySelector('.prow.h span:last-child');
+        if (head) head.textContent = list.some(function (v) { return !!v.pdf; }) ? 'Details' : '';
+      })
+      .catch(function () { /* fallback rows stay */ });
+  })();
 
   // Film opener. The poster is both a CSS background and the video's own
   // poster attribute, so any early return here simply leaves the still frame
