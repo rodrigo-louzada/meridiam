@@ -11,13 +11,95 @@
   // carrying a #fragment still goes to its section.
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-  // Open positions. The rows live in assets/fleet.json so the list can be kept
-  // current by editing one small file — on github.com if need be — without
-  // going near the markup. The rows already in the page are the fallback, so a
-  // missing or malformed file leaves the board standing rather than empty.
+  // Open positions. The rows come from a Google Sheet the desk keeps, published
+  // as CSV, so the list is edited in a spreadsheet rather than in this file.
+  // The rows already in the page are the fallback: if the sheet is unreachable,
+  // unpublished or malformed, the board stays standing rather than emptying.
+  var SHEET_CSV = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTN_Jn2AUxQwICZ8RPfvzbvBDXUQMhZH1GUXuNUeRXxXGGmlYmYmMHY3AdpWu2-C5x7vf_ThoJSU1cE/pub?gid=0&single=true&output=csv';
+
   (function () {
     var host = document.getElementById('fleet-rows');
     if (!host || !window.fetch) return;
+
+    // A real CSV reader, not a split on commas: a vessel name or a position can
+    // contain one, and the sheet quotes those fields. Doubled quotes inside a
+    // quoted field are a single literal quote.
+    var parseCSV = function (text) {
+      var rows = [], row = [], field = '', quoted = false, i = 0;
+      text = text.replace(/^\uFEFF/, '');            // Excel-style byte order mark
+      for (; i < text.length; i++) {
+        var c = text[i];
+        if (quoted) {
+          if (c === '"') {
+            if (text[i + 1] === '"') { field += '"'; i++; } else { quoted = false; }
+          } else { field += c; }
+        } else if (c === '"') { quoted = true;
+        } else if (c === ',') { row.push(field); field = '';
+        } else if (c === '\n' || c === '\r') {
+          if (c === '\r' && text[i + 1] === '\n') i++;
+          row.push(field); field = '';
+          rows.push(row); row = [];
+        } else { field += c; }
+      }
+      if (field !== '' || row.length) { row.push(field); rows.push(row); }
+      return rows;
+    };
+
+    // Headings are matched with accents and case stripped, so "Posição",
+    // "posicao" and "POSIÇÃO" are all the same column.
+    var norm = function (s) {
+      s = String(s == null ? '' : s).trim().toLowerCase();
+      return s.normalize ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s;
+    };
+
+    // Columns are found by their heading rather than their position, so
+    // reordering them in the sheet is harmless. English names accepted too.
+    var KEYS = {
+      name:  ['navio', 'vessel', 'nome'],
+      dwcc:  ['dwcc', 'dwt'],
+      open:  ['posicao', 'open', 'position'],
+      dates: ['datas', 'dates', 'laycan'],
+      pdf:   ['pdf', 'ficheiro', 'documento', 'details']
+    };
+
+    var indexOfHeading = function (head, names) {
+      for (var i = 0; i < head.length; i++) {
+        var h = norm(head[i]);
+        for (var j = 0; j < names.length; j++) if (h === names[j]) return i;
+      }
+      return -1;
+    };
+
+    var toVessels = function (rows) {
+      if (!rows.length) return [];
+      var head = rows[0], at = {};
+      for (var k in KEYS) at[k] = indexOfHeading(head, KEYS[k]);
+      if (at.name < 0) return [];                    // not the sheet we expect
+      var out = [];
+      for (var r = 1; r < rows.length; r++) {
+        var get = function (k) { return at[k] >= 0 ? (rows[r][at[k]] || '').trim() : ''; };
+        if (!get('name')) continue;                  // blank line in the sheet
+        out.push({ name: get('name'), dwcc: get('dwcc'), open: get('open'),
+                   dates: get('dates'), pdf: get('pdf') });
+      }
+      return out;
+    };
+
+    // A tonnage typed as a bare number reads better with a thousands separator.
+    // Anything else is left exactly as the desk wrote it.
+    var tonnage = function (s) {
+      return /^\d{4,}$/.test(s) ? Number(s).toLocaleString('en-GB') : s;
+    };
+
+    // Drive's own "share" link opens its preview page. The desk pastes that,
+    // because it is what the Copy link button gives them, so the file id is
+    // pulled out and rewritten as the direct download. Any other address is
+    // left alone, so a PDF hosted elsewhere still works.
+    var directDownload = function (url) {
+      var m = /drive\.google\.com\/(?:file\/d\/([\w-]+)|(?:open|uc)\?[^#]*\bid=([\w-]+))/.exec(url);
+      var id = m && (m[1] || m[2]);
+      return id ? 'https://drive.google.com/uc?export=download&id=' + id : url;
+    };
 
     var cell = function (text, cls) {
       var s = document.createElement('span');
@@ -30,17 +112,20 @@
       var r = document.createElement('div');
       r.className = 'prow';
       r.appendChild(cell(v.name, 'v'));
-      r.appendChild(cell(v.dwcc));
+      r.appendChild(cell(tonnage(v.dwcc)));
       r.appendChild(cell(v.open));
       // "Prompt" is the one value worth picking out of the column.
       r.appendChild(cell(v.dates, /^\s*prompt\s*$/i.test(v.dates || '') ? 'flag' : null));
 
       var last = document.createElement('span');
       last.className = 'pdf';
-      if (v.pdf) {
+      // Only http(s). A stray value in the sheet must never become a javascript:
+      // or data: link, whatever someone pastes into the column.
+      if (/^https?:\/\//i.test(v.pdf)) {
         var a = document.createElement('a');
-        a.href = v.pdf;
-        a.setAttribute('download', '');
+        a.href = directDownload(v.pdf);
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
         a.textContent = 'PDF';
         a.setAttribute('aria-label', 'Download the particulars for ' + (v.name || 'this vessel'));
         last.appendChild(a);
@@ -49,20 +134,20 @@
       return r;
     };
 
-    fetch('assets/fleet.json', { cache: 'no-cache' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (data) {
-        var list = data && data.vessels;
-        if (!list || !list.length) return;          // keep the fallback rows
+    fetch(SHEET_CSV, { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.text() : null; })
+      .then(function (text) {
+        var list = text ? toVessels(parseCSV(text)) : [];
+        if (!list.length) return;                    // keep the fallback rows
         var frag = document.createDocumentFragment();
         list.forEach(function (v) { frag.appendChild(row(v)); });
         host.textContent = '';
         host.appendChild(frag);
 
         // A column heading with nothing under it reads as a fault. The
-        // Details header earns its place only once a vessel carries a PDF.
+        // Details heading earns its place only once a vessel carries a PDF.
         var head = document.querySelector('.prow.h span:last-child');
-        if (head) head.textContent = list.some(function (v) { return !!v.pdf; }) ? 'Details' : '';
+        if (head) head.textContent = list.some(function (v) { return /^https?:\/\//i.test(v.pdf); }) ? 'Details' : '';
       })
       .catch(function () { /* fallback rows stay */ });
   })();

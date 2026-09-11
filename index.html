@@ -3,7 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; base-uri 'self'; form-action 'self'">
+<!-- connect-src carries two Google hosts because the published sheet is read
+     from docs.google.com, which redirects to a googleusercontent.com server
+     whose name varies from one request to the next. Both must be allowed or
+     the position list cannot be fetched. Nothing else is opened up: scripts,
+     styles, fonts and media still come only from this site. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; media-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; connect-src 'self' https://docs.google.com https://*.googleusercontent.com; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Meridiam Maritime — Short-sea dry cargo principal, European ranges</title>
 <meta name="description" content="Meridiam Maritime is an integrated short-sea dry cargo operator working 3,000–5,000 DWCC tonnage across the European ranges, in partnership with Pérez y Cía.">
@@ -169,11 +174,13 @@
       <h2 style="color:#fff">Our tonnage.</h2>
       <p class="lede">The position list goes out to brokers and principals at 08:00 CET each business day. Enquiries on positions, cargoes or market conditions are welcome at any hour.</p>
     </div>
-    <!-- Rows come from assets/fleet.json so the list can be kept up to date
-         without touching this file. What is written here is the fallback,
-         used if that file is missing or cannot be read. -->
+    <!-- Rows come from the desk's published Google Sheet, so the list is kept
+         up to date in a spreadsheet rather than here. What is written below is
+         the fallback, shown if the sheet cannot be read. -->
     <div class="board">
-      <div class="prow h"><span>Vessel</span><span>DWCC</span><span>Open</span><span>Dates</span><span>Details</span></div>
+      <!-- The last heading is filled in only when a vessel actually carries a
+           PDF; empty, it would sit over a column with nothing in it. -->
+      <div class="prow h"><span>Vessel</span><span>DWCC</span><span>Open</span><span>Dates</span><span></span></div>
       <div id="fleet-rows">
         <div class="prow"><span class="v">Vessel name</span><span>3,700</span><span>Rotterdam</span>
           <span class="flag">Prompt</span><span></span></div>
